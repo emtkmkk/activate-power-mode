@@ -1,6 +1,6 @@
 {
   "name": "activate-power-mode",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Activate POWER MODE anywhere",
   "main": "dist/activate-power-mode.js",
   "scripts": {

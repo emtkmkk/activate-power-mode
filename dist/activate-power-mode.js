@@ -131,7 +131,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	function POWERMODE() {
 	    { // spawn particles
 	        var caret = getCaret();
-	        var numParticles = 5 + Math.round(Math.random() * 10);
+	        var numParticles = 10 + Math.round(Math.random() * 15);
 	        while (numParticles--) {
 	            particles[particlePointer] = createParticle(caret.x, caret.y, caret.color);
 	            particlePointer = (particlePointer + 1) % 500;
@@ -139,7 +139,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	    { // shake screen
 	        if (POWERMODE.shake) {
-	            var intensity = 1 + 2 * Math.random();
+	            var intensity = 1 + 4 * Math.random();
 	            var x = intensity * (Math.random() > 0.5 ? -1 : 1);
 	            var y = intensity * (Math.random() > 0.5 ? -1 : 1);
 	            document.body.style.marginLeft = x + 'px';

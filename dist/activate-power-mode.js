@@ -59,7 +59,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var canvas = document.createElement('canvas');
 	canvas.width = window.innerWidth;
 	canvas.height = window.innerHeight;
-	canvas.style.cssText = 'position:fixed;top:0;left:0;pointer-events:none;z-index:999999';
+	canvas.style.cssText = 'position:fixed;top:0;left:0;pointer-events:none;z-index:9999999';
 	window.addEventListener('resize', function () {
 	    canvas.width = window.innerWidth;
 	    canvas.height = window.innerHeight;

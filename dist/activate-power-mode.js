@@ -83,6 +83,13 @@
                 shakeMinIntensity: 1, // 画面の揺れの最低強度
                 shakeMaxIntensity: 5, // 画面の揺れの最高強度
                 particleSize: 3, // パーティクルのサイズ
+                gravity: 0.05, // 重力
+                xOffset: 0, // 出現位置の横のずれ
+                yOffset: 0, // 出現位置の縦のずれ
+                spreadX: 10, // パーティクルの飛び散る広さ X
+                spreadY: 10, // パーティクルの飛び散る広さ Y
+                alphaDecay: 0.96, // パーティクルの透明度減衰度
+                colorfulParticles: false, // パーティクルの色を個別にするかどうか
             };
 
             POWERMODE.shake = true;
@@ -94,7 +101,7 @@
 
             // 色を取得する関数
             function getColor(el) {
-                if (POWERMODE.colorful) {
+                if (settings.colorfulParticles || POWERMODE.colorful) {
                     var u = getRandom(0, 360);
                     return 'hsla(' + getRandom(u - 10, u + 10) + ', 100%, ' + getRandom(50, 80) + '%, ' + 1 + ')';
                 } else {
@@ -111,8 +118,8 @@
                     var offset = __webpack_require__(1)(el, el.selectionEnd);
                     bcr = el.getBoundingClientRect();
                     return {
-                        x: offset.left + bcr.left,
-                        y: offset.top + bcr.top,
+                        x: offset.left + bcr.left + settings.xOffset,
+                        y: offset.top + bcr.top + settings.yOffset,
                         color: getColor(el)
                     };
                 }
@@ -125,8 +132,8 @@
                     }
                     bcr = range.getBoundingClientRect();
                     return {
-                        x: bcr.left,
-                        y: bcr.top,
+                        x: bcr.left + settings.xOffset,
+                        y: bcr.top + settings.yOffset,
                         color: getColor(startNode)
                     };
                 }
@@ -141,8 +148,8 @@
                     alpha: 1,
                     color: color,
                     velocity: {
-                        x: -1 + Math.random() * 2,
-                        y: -3.5 + Math.random() * 2,
+                        x: -settings.spreadX / 10 + Math.random() * settings.spreadX / 5,
+                        y: -settings.spreadY * 0.35 + Math.random() * settings.spreadY / 5
                     }
                 };
             }
@@ -152,8 +159,9 @@
                 { // パーティクルを生成
                     var caret = getCaret();
                     var numParticles = Math.round(getRandom(settings.particleMinCount, settings.particleMaxCount));
+                    var el = document.activeElement;
                     while (numParticles--) {
-                        particles[particlePointer] = createParticle(caret.x, caret.y, caret.color);
+                        particles[particlePointer] = createParticle(caret.x, caret.y, settings.colorfulParticles ? getColor(el) : caret.color);
                         particlePointer = (particlePointer + 1) % 500;
                     }
                 }
@@ -186,10 +194,10 @@
                 for (var i = 0; i < particles.length; ++i) {
                     var particle = particles[i];
                     if (particle.alpha <= 0.1) continue;
-                    particle.velocity.y += 0.05; // 重力
+                    particle.velocity.y += settings.gravity; // 重力
                     particle.x += particle.velocity.x;
                     particle.y += particle.velocity.y;
-                    particle.alpha *= 0.96;
+                    particle.alpha *= settings.alphaDecay;
                     context.globalAlpha = particle.alpha;
                     context.fillStyle = particle.color;
                     context.fillRect(
